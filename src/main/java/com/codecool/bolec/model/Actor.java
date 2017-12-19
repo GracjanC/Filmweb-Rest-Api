@@ -60,6 +60,8 @@ public class Actor {
     }
 
     public void setSex(String sex) {
+        if (!(sex.equalsIgnoreCase("male") | sex.equalsIgnoreCase("female")))
+            throw new IllegalArgumentException();
         this.sex = sex;
     }
 
@@ -76,6 +78,9 @@ public class Actor {
     }
 
     public void setHeight(int height) {
+        if (height <= 0)
+            throw new IllegalArgumentException();
+
         this.height = height;
     }
 }
