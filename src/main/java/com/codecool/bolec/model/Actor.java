@@ -11,6 +11,18 @@ public class Actor {
     private String hairColour;
     private int height;
 
+    public Actor() {
+    }
+
+    public Actor(String name, String surname, Date birthdate, String sex, String hairColour, int height) {
+        this.name = name;
+        this.surname = surname;
+        this.birthdate = birthdate;
+        this.sex = sex;
+        this.hairColour = hairColour;
+        this.height = height;
+    }
+
     public Long getId() {
         return id;
     }
