@@ -1,0 +1,8 @@
+com/codecool/bolec/servlets/ActorServlet.class
+com/codecool/bolec/model/Movie.class
+com/codecool/bolec/exceptions/NegativeValueException.class
+com/codecool/bolec/model/Director.class
+com/codecool/bolec/servlets/ServletInterface.class
+com/codecool/bolec/servlets/MovieServlet.class
+com/codecool/bolec/App.class
+com/codecool/bolec/model/Category.class

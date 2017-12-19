@@ -1,0 +1,8 @@
+/home/fasol/filmweb_new/src/main/java/com/codecool/bolec/exceptions/NegativeValueException.java
+/home/fasol/filmweb_new/src/main/java/com/codecool/bolec/App.java
+/home/fasol/filmweb_new/src/main/java/com/codecool/bolec/model/Category.java
+/home/fasol/filmweb_new/src/main/java/com/codecool/bolec/servlets/ServletInterface.java
+/home/fasol/filmweb_new/src/main/java/com/codecool/bolec/model/Movie.java
+/home/fasol/filmweb_new/src/main/java/com/codecool/bolec/servlets/ActorServlet.java
+/home/fasol/filmweb_new/src/main/java/com/codecool/bolec/servlets/MovieServlet.java
+/home/fasol/filmweb_new/src/main/java/com/codecool/bolec/model/Director.java
