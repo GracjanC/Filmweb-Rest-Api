@@ -2,12 +2,23 @@ package com.codecool.bolec.model;
 
 import com.codecool.bolec.exceptions.NegativeValueException;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Movie {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @ElementCollection(targetClass = com.codecool.bolec.model.Category.class)
+    @CollectionTable(name="genres")
     private List<Category> categories;
+
+    @ElementCollection(targetClass = com.codecool.bolec.model.Actor.class)
+    @CollectionTable(name="cast")
     private List<Actor> actors;
     private String title;
     private String director;

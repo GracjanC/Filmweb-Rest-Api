@@ -1,11 +1,17 @@
 package com.codecool.bolec.model;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 public class Actor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String surname;
+    @Temporal(TemporalType.DATE)
     private Date birthdate;
     private String sex;
     private String hairColour;
