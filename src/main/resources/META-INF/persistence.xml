@@ -18,8 +18,8 @@
 
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/filmweb"/>
-            <property name="javax.persistence.jdbc.user" value="fasol"/>
-            <property name="javax.persistence.jdbc.password" value="system"/>
+            <property name="javax.persistence.jdbc.user" value="elementary"/>
+            <property name="javax.persistence.jdbc.password" value="czehehe1"/>
             <!--<property name="javax.persistence.sql-load-script-source" value="insert.sql"/>-->
         </properties>
     </persistence-unit>
