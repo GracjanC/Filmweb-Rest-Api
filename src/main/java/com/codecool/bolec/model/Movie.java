@@ -2,15 +2,21 @@ package com.codecool.bolec.model;
 
 import com.codecool.bolec.exceptions.NegativeValueException;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Movie {
 
-    private List<Category> categories;
-    private List<Actor> actors;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private String title;
-    private String director;
+    @OneToOne
+    private Category category;
+    @OneToOne
+    private Director director;
     private String review;
     private int minAge;
     private int rating;
@@ -20,22 +26,20 @@ public class Movie {
     public Movie() {}
 
 
-    public Movie(String title, String director, String review, int minAge, int rating, int length, int year) {
+    public Movie(String title, Category category, Director director, String review, int minAge, int rating, int length, int year) {
         this.title = title;
+        this.category = category;
         this.director = director;
         this.review = review;
         this.minAge = minAge;
         this.rating = rating;
         this.length = length;
         this.year = year;
-        this.categories = new ArrayList<>();
-        this.actors = new ArrayList<>();
-
     }
 
     public String getTitle() { return title; }
 
-    public String getDirector() { return director; }
+    public Director getDirector() { return director; }
 
     public String getReview() { return review; }
 
@@ -49,7 +53,7 @@ public class Movie {
 
     public void setTitle(String title) { this.title = title; }
 
-    public void setDirector(String director) { this.director = director; }
+    public void setDirector(Director director) { this.director = director; }
 
     public void setReview(String review) { this.review = review; }
 
@@ -85,7 +89,11 @@ public class Movie {
 
     public void setYear(int year) { this.year = year; }
 
-    public void addActor(Actor actor) { this.actors.add(actor); }
+    public Category getCategory() {
+        return category;
+    }
 
-    public void addCategory(Category category) { this.categories.add(category); }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }
