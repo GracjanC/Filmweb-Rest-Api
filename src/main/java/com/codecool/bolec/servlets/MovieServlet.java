@@ -8,12 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
+@WebServlet("/movies")
 public class MovieServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {response.getWriter().write("xD"); }
+            throws ServletException, IOException {response.getWriter().write("moooovies"); }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
