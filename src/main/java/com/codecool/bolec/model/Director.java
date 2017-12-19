@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Actor {
+public class Director {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +17,10 @@ public class Actor {
     private String hairColour;
     private int height;
 
-    public Actor() {
+    public Director() {
     }
 
-    public Actor(String name, String surname, Date birthdate, String sex, String hairColour, int height) {
+    public Director(String name, String surname, Date birthdate, String sex, String hairColour, int height) {
         this.name = name;
         this.surname = surname;
         this.birthdate = birthdate;
