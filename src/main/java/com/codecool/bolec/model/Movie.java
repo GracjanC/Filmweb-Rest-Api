@@ -1,5 +1,7 @@
 package com.codecool.bolec.model;
 
+import com.codecool.bolec.exceptions.NegativeValueException;
+
 public class Movie {
 
     private String title;
@@ -73,16 +75,34 @@ public class Movie {
         this.review = review;
     }
 
-    public void setMinAge(int minAge) {
-        this.minAge = minAge;
+    public void setMinAge(int minAge) throws NegativeValueException {
+
+        if (minAge > 0) {
+            this.minAge = minAge;
+        } else {
+            throw new NegativeValueException("Wrong min. age provided, should be positive.");
+        }
+
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void setRating(int rating) throws NegativeValueException {
+
+        if(rating >= 0) {
+            this.rating = rating;
+
+        } else {
+            throw new NegativeValueException("Wrong rating provided, shouldn't be negative.");
+        }
     }
 
-    public void setLength(int length) {
-        this.length = length;
+    public void setLength(int length) throws NegativeValueException {
+
+        if(length > 0) {
+            this.length = length;
+        } else {
+            throw new NegativeValueException("length should be positive");
+        }
+
     }
 
     public void setYear(int year) {
