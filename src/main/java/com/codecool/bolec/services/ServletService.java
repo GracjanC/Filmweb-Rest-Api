@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.lang.reflect.Type;
+import java.util.List;
 
 public class ServletService<T> {
 
@@ -20,5 +21,19 @@ public class ServletService<T> {
         emf.close();
 
         return object;
+    }
+
+
+    public List<T> getAll() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        List<T> categories = em.createQuery("SELECT c FROM Category c").getResultList();
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
+
+        return categories;
     }
 }
