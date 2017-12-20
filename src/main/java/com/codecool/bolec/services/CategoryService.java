@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CategoryService {
 
-    public Category find(Integer id) {
+    public Category find(Long id) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
         EntityManager em = emf.createEntityManager();
 
@@ -43,6 +43,21 @@ public class CategoryService {
         //json to object method
 
         transaction.commit();
+        em.close();
+        emf.close();
+    }
+
+    public void delete(Long id) {
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        Category category = em.find(Category.class, id);
+
+        transaction.begin();
+        em.remove(category);
+        transaction.commit();
+
         em.close();
         emf.close();
     }
