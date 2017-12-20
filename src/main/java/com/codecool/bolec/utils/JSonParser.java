@@ -13,4 +13,17 @@ public class JSonParser {
         return serializedObject;
     }
     
+    private static String getClassName(Type type) {
+        if (type==null) {
+            return "";
+        }
+
+        String className = type.toString();
+        if (className.startsWith(TYPE_NAME_PREFIX)) {
+            className = className.substring(TYPE_NAME_PREFIX.length());
+        }
+        return className;
+    }
+
+
 }
