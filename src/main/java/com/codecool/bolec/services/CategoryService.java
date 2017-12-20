@@ -4,6 +4,7 @@ import com.codecool.bolec.model.Category;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.List;
 
@@ -32,5 +33,17 @@ public class CategoryService {
         return categories;
     }
 
+    public void addToDb(String json) {
 
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+
+        //json to object method
+
+        transaction.commit();
+        em.close();
+        emf.close();
+    }
 }
