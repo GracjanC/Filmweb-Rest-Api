@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/actors"})
-public class ActorServlet extends HttpServlet implements ServletInterface{
+@WebServlet(urlPatterns = {"/director"})
+public class DirectorServlet extends HttpServlet implements ServletInterface{
     @Override
     public void doPost(HttpServletRequest httpServletRequest,
                        HttpServletResponse httpServletResponse) throws ServletException, IOException {
