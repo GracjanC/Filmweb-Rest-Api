@@ -21,13 +21,13 @@ public class CategoryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest httpServletRequest,
                          HttpServletResponse httpServletResponse)
                          throws ServletException, IOException {
-        String query = httpServletRequest.getPathInfo();
-        String json = "";
+        String idPath = httpServletRequest.getPathInfo();
+        String json;
 
-        if (query == null) {
+        if (idPath == null) {
             json = new Gson().toJson(new CategoryService().getAll(), new TypeToken<List<Category>>() {}.getType());
         } else {
-            Long id = Long.valueOf(query.substring(1));
+            Long id = Long.valueOf(idPath.replace("/", ""));
             json = JSonParser.objectToJSon(new CategoryService().find(id));
         }
 
@@ -37,13 +37,25 @@ public class CategoryServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 
+
     }
+
     @Override
     protected void doPut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 
     }
     @Override
-    protected void doDelete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    protected void doDelete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+                            throws ServletException, IOException {
 
+        String idPath = httpServletRequest.getPathInfo();
+
+        if (idPath == null) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } else {
+            Long id = Long.valueOf(idPath.replace("/", ""));
+            new CategoryService().delete(id);
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+        }
     }
 }
