@@ -36,6 +36,15 @@ public class JSonParser {
 
         return Class.forName(className);
     }
+    
+    public static Object jsonToObject(String json, Type type) throws ClassNotFoundException{
+        Class<?> className = getClass(type);
+        Object object = new Gson().fromJson(json, className);
+
+        return object;
+
+
+    }
 
 
 }
