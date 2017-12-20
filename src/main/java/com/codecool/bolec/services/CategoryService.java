@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CategoryService {
 
-    public Category find(Integer id) {
+    public Category find(Long id) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
         EntityManager em = emf.createEntityManager();
 
