@@ -1,4 +1,4 @@
-package com.codecool.bolec.encoding;
+package com.codecool.bolec.utils;
 
 
 import java.net.URLDecoder;
