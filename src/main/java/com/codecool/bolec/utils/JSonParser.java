@@ -12,7 +12,7 @@ public class JSonParser {
 
         return serializedObject;
     }
-    
+
     private static String getClassName(Type type) {
         if (type==null) {
             return "";
@@ -23,6 +23,18 @@ public class JSonParser {
             className = className.substring(TYPE_NAME_PREFIX.length());
         }
         return className;
+    }
+
+    private static  Class<?> getClass(Type type)
+            throws ClassNotFoundException {
+
+        String className = getClassName(type);
+
+        if (className==null || className.isEmpty()) {
+            return null;
+        }
+
+        return Class.forName(className);
     }
 
 
