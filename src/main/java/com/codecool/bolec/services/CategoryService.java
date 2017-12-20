@@ -46,4 +46,19 @@ public class CategoryService {
         em.close();
         emf.close();
     }
+
+    public void delete(Long id) {
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        Category category = em.find(Category.class, id);
+
+        transaction.begin();
+        em.remove(category);
+        transaction.commit();
+
+        em.close();
+        emf.close();
+    }
 }
