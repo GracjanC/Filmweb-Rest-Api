@@ -1,7 +1,6 @@
 package com.codecool.bolec.servlets;
 
 import com.codecool.bolec.model.Category;
-import com.codecool.bolec.services.CategoryService;
 import com.codecool.bolec.services.ServletService;
 import com.codecool.bolec.utils.JSonParser;
 
@@ -44,9 +43,22 @@ public class CategoryServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+                          throws IOException {
 
+        String json = httpServletRequest.getReader().lines().collect(Collectors.joining());
 
+        try {
+            JSonParser<Category> jsonParser = new JSonParser<>();
+            ServletService<Category> service = new ServletService<>(Category.class);
+            Category category = jsonParser.jsonToObject(json, Category.class);
+
+            service.post(category);
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -62,7 +74,7 @@ public class CategoryServlet extends HttpServlet {
             JSonParser<Category> jsonParser = new JSonParser<>();
             ServletService<Category> service = new ServletService<>(Category.class);
 
-            Category newCategory = (Category) jsonParser.jsonToObject(json, Category.class);
+            Category newCategory = jsonParser.jsonToObject(json, Category.class);
             Category oldCategory = em.find(Category.class, Long.valueOf(httpServletRequest.getPathInfo().replace("/","")));
 
             if (oldCategory == null) {
