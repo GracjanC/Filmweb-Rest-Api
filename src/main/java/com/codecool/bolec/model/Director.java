@@ -1,6 +1,9 @@
 package com.codecool.bolec.model;
 
 import javax.persistence.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -20,10 +23,10 @@ public class Director {
     public Director() {
     }
 
-    public Director(String name, String surname, Date birthdate, String sex, String hairColour, int height) {
+    public Director(String name, String surname, String birthdate, String sex, String hairColour, int height)  {
         this.name = name;
         this.surname = surname;
-        this.birthdate = birthdate;
+        this.birthdate = this.stringToDate(birthdate);
         this.sex = sex;
         this.hairColour = hairColour;
         this.height = height;
@@ -88,5 +91,20 @@ public class Director {
             throw new IllegalArgumentException();
 
         this.height = height;
+    }
+
+    private Date stringToDate(String dateString) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = Calendar.getInstance().getTime();
+
+        try {
+            date = sdf.parse(dateString);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        return date;
     }
 }

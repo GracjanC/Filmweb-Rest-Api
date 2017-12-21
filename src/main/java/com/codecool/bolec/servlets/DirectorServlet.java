@@ -23,10 +23,15 @@ public class DirectorServlet extends HttpServlet implements ServletInterface{
         try {
             JSonParser<Director> jsonParser = new JSonParser<>();
             ServletService<Director> service = new ServletService<>(Director.class);
-            Director director = jsonParser.jsonToObject(json, Director.class);
 
-            service.post(director);
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            if (service.containsId(json)) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+            } else {
+                Director category = jsonParser.jsonToObject(json, Director.class);
+
+                service.post(category);
+                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            }
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -88,19 +93,30 @@ public class DirectorServlet extends HttpServlet implements ServletInterface{
     public void doGet(HttpServletRequest httpServletRequest,
                       HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
-//        String idPath = httpServletRequest.getPathInfo();
-//        String json;
-//
-//        if (idPath == null) {
-//            List<Director> directorList = new DirectorService.getAll();
-//            json = JSonParser.listToJSon(directorList);
-//
-//        } else {
-//            Long id = Long.valueOf(idPath.replace("/", ""));
-//            json = JSonParser.objectToJSon(new DirectorService().find(id));
-//        }
-//
-//        httpServletResponse.getWriter().write(json);
+        String idPath = httpServletRequest.getPathInfo();
+        String json = "";
 
+        try {
+            JSonParser<Director> jsonParser = new JSonParser<>();
+            ServletService<Director> service = new ServletService<>(Director.class);
+
+            if (httpServletRequest.getPathInfo() == null) {
+                json += jsonParser.listToJSon(service.getAll());
+
+            } else {
+                Long id = Long.valueOf(httpServletRequest.getPathInfo().replace("/", ""));
+                if(service.getObject(id) != null) {
+                    json += jsonParser.objectToJSon(service.getObject(id));
+                }
+            }
+            if (json.isEmpty()) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+            } else httpServletResponse.getWriter().write(json);
+
+        } catch (ClassNotFoundException | IllegalArgumentException e) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            e.printStackTrace();
+        }
     }
 }
