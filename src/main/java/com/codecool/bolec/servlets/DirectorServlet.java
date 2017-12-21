@@ -50,7 +50,7 @@ public class DirectorServlet extends HttpServlet implements ServletInterface{
             if (oldDirector == null) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
             } else {
-                service.put(newDirector, oldDirector);
+                service.put(newDirector);
                 httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             }
 
@@ -69,11 +69,15 @@ public class DirectorServlet extends HttpServlet implements ServletInterface{
             ServletService<Director> service = new ServletService<>(Director.class);
 
             if (idPath == null) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
             } else {
                 Long id = Long.valueOf(idPath.replace("/", ""));
-                service.delete(id);
-                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                if (service.getObject(id) == null) {
+                    httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                } else {
+                    service.delete(id);
+                    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                }
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
