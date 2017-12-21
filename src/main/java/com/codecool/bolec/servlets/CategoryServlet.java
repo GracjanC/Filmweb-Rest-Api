@@ -74,7 +74,7 @@ public class CategoryServlet extends HttpServlet implements ServletInterface {
             if (oldCategory == null) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
             } else {
-                service.put(newCategory, oldCategory);
+                service.put(newCategory);
                 httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             }
 
@@ -92,11 +92,15 @@ public class CategoryServlet extends HttpServlet implements ServletInterface {
             ServletService<Category> service = new ServletService<>(Category.class);
 
             if (idPath == null) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
             } else {
                 Long id = Long.valueOf(idPath.replace("/", ""));
-                service.delete(id);
-                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                if (service.getObject(id) == null) {
+                    httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                } else {
+                    service.delete(id);
+                    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                }
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
