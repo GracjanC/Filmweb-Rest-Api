@@ -37,6 +37,26 @@ public class DirectorServlet extends HttpServlet implements ServletInterface{
     public void doPut(HttpServletRequest httpServletRequest,
                       HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
+        String json = httpServletRequest.getReader().lines().collect(Collectors.joining());
+
+        try {
+            JSonParser<Director> jsonParser = new JSonParser<>();
+            ServletService<Director> service = new ServletService<>(Director.class);
+
+            Long id = Long.valueOf(httpServletRequest.getPathInfo().replace("/", ""));
+            Director newDirector = jsonParser.jsonToObject(json, Director.class);
+            Director oldDirector = service.getObject(id);
+
+            if (oldDirector == null) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+            } else {
+                service.put(newDirector, oldDirector);
+                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
