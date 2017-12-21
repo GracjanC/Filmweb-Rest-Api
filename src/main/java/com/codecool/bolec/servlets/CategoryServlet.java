@@ -47,11 +47,15 @@ public class CategoryServlet extends HttpServlet implements ServletInterface {
         try {
             JSonParser<Category> jsonParser = new JSonParser<>();
             ServletService<Category> service = new ServletService<>(Category.class);
-            Category category = jsonParser.jsonToObject(json, Category.class);
 
-            service.post(category);
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            if (service.containsId(json)) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+            } else {
+                Category category = jsonParser.jsonToObject(json, Category.class);
 
+                service.post(category);
+                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
