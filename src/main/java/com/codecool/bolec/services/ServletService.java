@@ -42,6 +42,20 @@ public class ServletService<T> {
         return categories;
     }
 
+    public void post(T object) {
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+
+        transaction.begin();
+        em.persist(object);
+        transaction.commit();
+
+        em.close();
+        emf.close();
+    }
+
     public void delete(Long id) {
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
