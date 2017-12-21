@@ -1,6 +1,5 @@
 package com.codecool.bolec.services;
 
-import com.codecool.bolec.utils.JSonParser;
 import com.codecool.bolec.utils.ReflectionHelpers;
 
 import javax.persistence.EntityManager;
@@ -84,9 +83,5 @@ public class ServletService<T> {
 
         em.close();
         emf.close();
-    }
-
-    public Class<?> getClassType() {
-        return classType;
     }
 }
