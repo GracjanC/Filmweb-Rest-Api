@@ -1,7 +1,6 @@
 package com.codecool.bolec.servlets;
 
 
-import com.codecool.bolec.model.Category;
 import com.codecool.bolec.model.Movie;
 import com.codecool.bolec.services.ServletService;
 import com.codecool.bolec.utils.JSonParser;
@@ -25,12 +24,15 @@ public class MovieServlet extends HttpServlet {
         String json;
 
         try {
-            JSonParser<Category> jsonParser = new JSonParser<>();
-            ServletService<Category> service = new ServletService<>(Category.class);
+            JSonParser<Movie> jsonParser = new JSonParser<>();
+            ServletService<Movie> service = new ServletService<>(Movie.class);
 
             if (idPath == null) {
-                if(request.getQueryString() != null) {
+                // /movies
+                if(request.getQueryString() == null) {
                     json = jsonParser.listToJSon(service.getAll());
+
+                // /movies?{QUERYSTRING}
                 } else {
                     json = "";
 
@@ -39,26 +41,30 @@ public class MovieServlet extends HttpServlet {
 
                     ServletService<Movie> moviesService = new ServletService<>(Movie.class);
                     List<Movie> categoryMovies = moviesService.getByCategoryId(categoryId);
+                    List<Movie> directorMovies = moviesService.getByDirectorId(directorId);
                     JSonParser<Movie> parser = new JSonParser<>();
 
-                    json += parser.listToJSon(categoryMovies);
+                    String categoryMoviesJson = parser.listToJSon(categoryMovies);
+                    String directorMoviesJson = parser.listToJSon(directorMovies);
 
-                    List<Movie> directorMovies = moviesService.getByDirectorId(directorId);
-                    json += parser.listToJSon(directorMovies);
-
-                    if( json.length() == 0) {
-                        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                    } else {
-                        response.getWriter().write(json);
+                    if(!categoryMoviesJson.isEmpty()) {
+                        json += parser.listToJSon(categoryMovies);
+                    }
+                    if(!directorMoviesJson.isEmpty()){
+                        json += parser.listToJSon(directorMovies);
                     }
                 }
-
+            // /movies/{id}
             } else {
                 Long id = Long.valueOf(idPath.replace("/", ""));
                 json = jsonParser.objectToJSon(service.getObject(id));
             }
+            //validate empty json
+            if (json.length() == 0) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 
-            response.getWriter().write(json);
+            } else response.getWriter().write(json);
+
         } catch (ClassNotFoundException | NumberFormatException e) {
             e.printStackTrace();
         }
@@ -74,7 +80,24 @@ public class MovieServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException { }
+            throws ServletException, IOException {
+
+        String idPath = request.getPathInfo();
+
+        try {
+            ServletService<Movie> service = new ServletService<>(Movie.class);
+
+            if (idPath == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            } else {
+                Long id = Long.valueOf(idPath.replace("/", ""));
+                service.delete(id);
+                response.setStatus(HttpServletResponse.SC_OK);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
 
