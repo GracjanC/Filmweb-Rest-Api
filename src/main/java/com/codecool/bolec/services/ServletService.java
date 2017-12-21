@@ -56,6 +56,21 @@ public class ServletService<T> {
         emf.close();
     }
 
+    public void put(T newObject, T oldObject) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+
+        oldObject = newObject;
+
+        em.getTransaction().begin();
+        em.merge(oldObject);
+        em.getTransaction().commit();
+
+        em.close();
+        emf.close();
+    }
+
     public void delete(Long id) {
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
