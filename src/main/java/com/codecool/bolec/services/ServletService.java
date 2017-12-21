@@ -1,7 +1,5 @@
 package com.codecool.bolec.services;
 
-import com.codecool.bolec.model.Movie;
-import com.codecool.bolec.utils.JSonParser;
 import com.codecool.bolec.utils.ReflectionHelpers;
 
 import javax.persistence.EntityManager;
@@ -57,16 +55,14 @@ public class ServletService<T> {
         emf.close();
     }
 
-    public void put(T newObject, T oldObject) {
+    public void put(T newObject) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
 
-        oldObject = newObject;
-
-        em.getTransaction().begin();
-        em.merge(oldObject);
-        em.getTransaction().commit();
+        transaction.begin();
+        em.merge(newObject);
+        transaction.commit();
 
         em.close();
         emf.close();
@@ -86,11 +82,6 @@ public class ServletService<T> {
         em.close();
         emf.close();
     }
-
-    public Class<?> getClassType() {
-        return classType;
-    }
-
 
     public List<T> getByCategoryId(String id) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
