@@ -93,7 +93,29 @@ public class MovieServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException { }
+            throws ServletException, IOException {
+
+        String json = request.getReader().lines().collect(Collectors.joining());
+
+        try {
+            JSonParser<Movie> jsonParser = new JSonParser<>();
+            ServletService<Movie> service = new ServletService<>(Movie.class);
+
+            Long id = Long.valueOf(request.getPathInfo().replace("/", ""));
+            Movie newMovie = jsonParser.jsonToObject(json, Movie.class);
+            Movie oldMovie = service.getObject(id);
+
+            if (oldMovie == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+            } else {
+                service.put(newMovie);
+                response.setStatus(HttpServletResponse.SC_OK);
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
