@@ -4,10 +4,6 @@ import com.codecool.bolec.model.Category;
 import com.codecool.bolec.services.ServletService;
 import com.codecool.bolec.utils.JSonParser;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +17,7 @@ public class CategoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest httpServletRequest,
                          HttpServletResponse httpServletResponse)
-                         throws ServletException, IOException {
+                         throws IOException {
         String idPath = httpServletRequest.getPathInfo();
         String json;
 
@@ -63,7 +59,7 @@ public class CategoryServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
-                         throws ServletException, IOException {
+                         throws IOException {
 
         String json = httpServletRequest.getReader().lines().collect(Collectors.joining());
 
@@ -88,8 +84,7 @@ public class CategoryServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
-                            throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 
         String idPath = httpServletRequest.getPathInfo();
 
