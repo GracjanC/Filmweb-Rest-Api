@@ -1,6 +1,5 @@
 package com.codecool.bolec.services;
 
-import com.codecool.bolec.utils.JSonParser;
 import com.codecool.bolec.utils.ReflectionHelpers;
 
 import javax.persistence.EntityManager;
@@ -82,26 +81,6 @@ public class ServletService<T> {
         em.remove(object);
         transaction.commit();
 
-        em.close();
-        emf.close();
-    }
-
-    public Class<?> getClassType() {
-        return classType;
-    }
-
-    public void addToDb(String json) throws ClassNotFoundException {
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction transaction = em.getTransaction();
-        JSonParser<T> jp = new JSonParser<>();
-        transaction.begin();
-
-        T object = jp.jsonToObject(json, this.classType);
-        em.persist(object);
-
-        transaction.commit();
         em.close();
         emf.close();
     }

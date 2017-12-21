@@ -22,16 +22,6 @@ public class App
 
         populateDb(em);
 
-        Movie foundMovie1 = em.find(Movie.class, 1L);
-        System.out.println("--Found student #1");
-        System.out.println("----name----" + foundMovie1.getTitle());
-        System.out.println("----review----" + foundMovie1.getReview());
-
-        Movie foundMovie2 = em.find(Movie.class, 2L);
-        System.out.println("--Found student #2");
-        System.out.println("----name----" + foundMovie2.getTitle());
-        System.out.println("----category----" + foundMovie2.getCategory().getName());
-
         em.close();
         emf.close();
     }
