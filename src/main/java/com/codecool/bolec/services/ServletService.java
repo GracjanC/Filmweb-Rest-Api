@@ -82,4 +82,30 @@ public class ServletService<T> {
         em.close();
         emf.close();
     }
+
+    public List<T> getByCategoryId(String id) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        List<T> items = em.createQuery(String.format(
+                "SELECT c FROM %s c WHERE c.category = %s", this.classType.getSimpleName(), id)).getResultList();
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
+
+        return items;
+    }
+
+    public List<T> getByDirectorId(String id) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        List<T> items = em.createQuery(String.format(
+                "SELECT c FROM %s c WHERE c.director = %s", this.classType.getSimpleName(), id)).getResultList();
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
+
+        return items;
+    }
 }
