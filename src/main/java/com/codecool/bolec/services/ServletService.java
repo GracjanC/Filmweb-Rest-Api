@@ -4,6 +4,7 @@ import com.codecool.bolec.utils.ReflectionHelpers;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -29,7 +30,7 @@ public class ServletService<T> {
     public List<T> getAll() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
         EntityManager em = emf.createEntityManager();
-        String queryString = String.format("SELECT t FROM %s t", classType.getSimpleName());
+        String queryString = String.format("SELECT t FROM %s t", this.classType.getSimpleName());
         em.getTransaction().begin();
 
         List<T> categories = em.createQuery(queryString).getResultList();
@@ -38,6 +39,21 @@ public class ServletService<T> {
         emf.close();
 
         return categories;
+    }
+
+    public void delete(Long id) {
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        T object = (T) em.find(this.classType, id);
+
+        transaction.begin();
+        em.remove(object);
+        transaction.commit();
+
+        em.close();
+        emf.close();
     }
 
     public Class<?> getClassType() {
