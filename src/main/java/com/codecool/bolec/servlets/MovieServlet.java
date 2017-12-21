@@ -37,7 +37,7 @@ public class MovieServlet extends HttpServlet {
                     String categoryId = request.getParameter("category");
                     String directorId = request.getParameter("director");
 
-                    ServletService<Category> moviesService = new ServletService<>(Movie.class);
+                    ServletService<Movie> moviesService = new ServletService<>(Movie.class);
                     List<Movie> categoryMovies = moviesService.getByCategoryId(categoryId);
                     JSonParser<Movie> parser = new JSonParser<>();
 
