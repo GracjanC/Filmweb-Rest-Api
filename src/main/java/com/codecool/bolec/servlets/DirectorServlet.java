@@ -43,6 +43,21 @@ public class DirectorServlet extends HttpServlet implements ServletInterface{
     public void doDelete(HttpServletRequest httpServletRequest,
                          HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
+        String idPath = httpServletRequest.getPathInfo();
+
+        try {
+            ServletService<Director> service = new ServletService<>(Director.class);
+
+            if (idPath == null) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            } else {
+                Long id = Long.valueOf(idPath.replace("/", ""));
+                service.delete(id);
+                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
