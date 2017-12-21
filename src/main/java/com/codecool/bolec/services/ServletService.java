@@ -1,6 +1,8 @@
 package com.codecool.bolec.services;
 
 import com.codecool.bolec.utils.ReflectionHelpers;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -107,5 +109,12 @@ public class ServletService<T> {
         emf.close();
 
         return items;
+    }
+
+    public boolean containsId(String json) {
+
+        JsonObject jsonObj = new Gson().fromJson(json, JsonObject.class);
+        return jsonObj.has("id");
+
     }
 }
