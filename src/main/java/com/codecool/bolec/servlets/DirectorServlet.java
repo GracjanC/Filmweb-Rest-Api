@@ -88,19 +88,23 @@ public class DirectorServlet extends HttpServlet implements ServletInterface{
     public void doGet(HttpServletRequest httpServletRequest,
                       HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
-//        String idPath = httpServletRequest.getPathInfo();
-//        String json;
-//
-//        if (idPath == null) {
-//            List<Director> directorList = new DirectorService.getAll();
-//            json = JSonParser.listToJSon(directorList);
-//
-//        } else {
-//            Long id = Long.valueOf(idPath.replace("/", ""));
-//            json = JSonParser.objectToJSon(new DirectorService().find(id));
-//        }
-//
-//        httpServletResponse.getWriter().write(json);
+        String idPath = httpServletRequest.getPathInfo();
+        String json;
 
+        try {
+            JSonParser<Director> jsonParser = new JSonParser<>();
+            ServletService<Director> service = new ServletService<>(Director.class);
+
+            if (idPath == null) {
+                json = jsonParser.listToJSon(service.getAll());
+            } else {
+                Long id = Long.valueOf(idPath.replace("/", ""));
+                json = jsonParser.objectToJSon(service.getObject(id));
+            }
+
+            httpServletResponse.getWriter().write(json);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
