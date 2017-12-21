@@ -21,45 +21,23 @@ public class MovieServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String idPath = request.getPathInfo();
         String json = "";
 
         try {
             JSonParser<Movie> jsonParser = new JSonParser<>();
             ServletService<Movie> service = new ServletService<>(Movie.class);
 
-            if (idPath == null) {
-                // /movies
+            if (request.getPathInfo() == null) {
                 if(request.getQueryString() == null) {
                     json += jsonParser.listToJSon(service.getAll());
+                } else { json = handleQueryString(request, json); }
 
-                // /movies?{QUERYSTRING}
-                } else {
-                    String categoryId = request.getParameter("category");
-                    String directorId = request.getParameter("director");
-
-                    ServletService<Movie> moviesService = new ServletService<>(Movie.class);
-                    List<Movie> categoryMovies = moviesService.getByParameterId(categoryId, "category");
-                    List<Movie> directorMovies = moviesService.getByParameterId(directorId, "director");
-                    JSonParser<Movie> parser = new JSonParser<>();
-
-                    if(!categoryMovies.isEmpty()) {
-                        json += parser.listToJSon(categoryMovies);
-                    }
-                    if(!directorMovies.isEmpty()){
-                        json += parser.listToJSon(directorMovies);
-                    }
-                }
-            // /movies/{id}
             } else {
-                Long id = Long.valueOf(idPath.replace("/", ""));
-                String movieById = jsonParser.objectToJSon(service.getObject(id));
-                if(!movieById.isEmpty()) {
-                    json += movieById;
+                Long id = Long.valueOf(request.getPathInfo().replace("/", ""));
+                if(service.getObject(id) != null) {
+                    json += jsonParser.objectToJSon(service.getObject(id));
                 }
             }
-            //validate empty json
             if (json.isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 
@@ -140,6 +118,23 @@ public class MovieServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
+
+    private String handleQueryString(HttpServletRequest request, String json) throws ClassNotFoundException {
+
+        String categoryId = request.getParameter("category");
+        String directorId = request.getParameter("director");
+
+        ServletService<Movie> moviesService = new ServletService<>(Movie.class);
+        List<Movie> categoryMovies = moviesService.getByParameterId(categoryId, "category");
+        List<Movie> directorMovies = moviesService.getByParameterId(directorId, "director");
+        JSonParser<Movie> parser = new JSonParser<>();
+
+        if(!categoryMovies.isEmpty()) { json += parser.listToJSon(categoryMovies); }
+        if(!directorMovies.isEmpty()){ json += parser.listToJSon(directorMovies); }
+
+        return json;
+    }
+
 
 }
 
