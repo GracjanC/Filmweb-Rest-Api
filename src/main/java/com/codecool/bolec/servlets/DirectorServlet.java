@@ -23,10 +23,15 @@ public class DirectorServlet extends HttpServlet implements ServletInterface{
         try {
             JSonParser<Director> jsonParser = new JSonParser<>();
             ServletService<Director> service = new ServletService<>(Director.class);
-            Director director = jsonParser.jsonToObject(json, Director.class);
 
-            service.post(director);
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            if (service.containsId(json)) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+            } else {
+                Director category = jsonParser.jsonToObject(json, Director.class);
+
+                service.post(category);
+                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            }
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
