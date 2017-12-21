@@ -8,10 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class App 
 {
@@ -28,19 +24,10 @@ public class App
 
     public static void populateDb(EntityManager em) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date lynchdate = Calendar.getInstance().getTime();
-        Date jarmuschdate = Calendar.getInstance().getTime();
-        Date jacksondate = Calendar.getInstance().getTime();
-        Date wiseaudate = Calendar.getInstance().getTime();
-        try {
-            lynchdate = sdf.parse("1947-01-20");
-            jarmuschdate = sdf.parse("1953-01-22");
-            jacksondate = sdf.parse("1961-10-31");
-            wiseaudate = sdf.parse("1955-10-03");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        String lynchdate = "1947-01-20";
+        String jarmuschdate = "1953-01-22";
+        String jacksondate = "1961-10-31";
+        String wiseaudate = "1955-10-03";
 
         Category horror = new Category("Horror");
         Category drama = new Category("Drama");
