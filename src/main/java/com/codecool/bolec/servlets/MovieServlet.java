@@ -58,11 +58,15 @@ public class MovieServlet extends HttpServlet {
         try {
             JSonParser<Movie> jsonParser = new JSonParser<>();
             ServletService<Movie> service = new ServletService<>(Movie.class);
-            Movie movie = jsonParser.jsonToObject(json, Movie.class);
 
-            service.post(movie);
-            response.setStatus(HttpServletResponse.SC_OK);
+            if (service.containsId(json)) {
+                response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+            } else {
+                Movie movie = jsonParser.jsonToObject(json, Movie.class);
 
+                service.post(movie);
+                response.setStatus(HttpServletResponse.SC_OK);
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
