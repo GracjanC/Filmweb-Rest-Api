@@ -1,5 +1,6 @@
 package com.codecool.bolec.services;
 
+import com.codecool.bolec.model.Movie;
 import com.codecool.bolec.utils.JSonParser;
 import com.codecool.bolec.utils.ReflectionHelpers;
 
@@ -90,19 +91,28 @@ public class ServletService<T> {
         return classType;
     }
 
-    public void addToDb(String json) throws ClassNotFoundException {
 
+    public List<Movie> getByCategoryId(String id) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
         EntityManager em = emf.createEntityManager();
-        EntityTransaction transaction = em.getTransaction();
-        JSonParser<T> jp = new JSonParser<>();
-        transaction.begin();
-
-        T object = jp.jsonToObject(json, this.classType);
-        em.persist(object);
-
-        transaction.commit();
+        em.getTransaction().begin();
+        List<Movie> movies = em.createQuery(String.format("SELECT c FROM Movie c WHERE c.category = %s", id)).getResultList();
+        em.getTransaction().commit();
         em.close();
         emf.close();
+
+        return movies;
+    }
+
+    public List<Movie> getByDirectorId(String id) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        List<Movie> movies = em.createQuery(String.format("SELECT c FROM Movie c WHERE c.director = %s", id)).getResultList();
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
+
+        return movies;
     }
 }
