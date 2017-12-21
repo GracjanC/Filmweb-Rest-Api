@@ -1,6 +1,7 @@
 package com.codecool.bolec.servlets;
 
 
+import com.codecool.bolec.model.Category;
 import com.codecool.bolec.model.Movie;
 import com.codecool.bolec.services.ServletService;
 import com.codecool.bolec.utils.JSonParser;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet("/movies/*")
 public class MovieServlet extends HttpServlet {
@@ -72,7 +74,22 @@ public class MovieServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException { }
+            throws ServletException, IOException {
+
+        String json = request.getReader().lines().collect(Collectors.joining());
+
+        try {
+            JSonParser<Movie> jsonParser = new JSonParser<>();
+            ServletService<Movie> service = new ServletService<>(Movie.class);
+            Movie movie = jsonParser.jsonToObject(json, Movie.class);
+
+            service.post(movie);
+            response.setStatus(HttpServletResponse.SC_OK);
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
@@ -91,8 +108,12 @@ public class MovieServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             } else {
                 Long id = Long.valueOf(idPath.replace("/", ""));
-                service.delete(id);
-                response.setStatus(HttpServletResponse.SC_OK);
+                if (service.getObject(id) == null) {
+                    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                } else {
+                    service.delete(id);
+                    response.setStatus(HttpServletResponse.SC_OK);
+                }
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
