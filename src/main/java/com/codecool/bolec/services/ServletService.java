@@ -92,27 +92,29 @@ public class ServletService<T> {
     }
 
 
-    public List<Movie> getByCategoryId(String id) {
+    public List<T> getByCategoryId(String id) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        List<Movie> movies = em.createQuery(String.format("SELECT c FROM Movie c WHERE c.category = %s", id)).getResultList();
+        List<T> items = em.createQuery(String.format(
+                "SELECT c FROM %s c WHERE c.category = %s", this.classType.getSimpleName(), id)).getResultList();
         em.getTransaction().commit();
         em.close();
         emf.close();
 
-        return movies;
+        return items;
     }
 
-    public List<Movie> getByDirectorId(String id) {
+    public List<T> getByDirectorId(String id) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        List<Movie> movies = em.createQuery(String.format("SELECT c FROM Movie c WHERE c.director = %s", id)).getResultList();
+        List<T> items = em.createQuery(String.format(
+                "SELECT c FROM %s c WHERE c.director = %s", this.classType.getSimpleName(), id)).getResultList();
         em.getTransaction().commit();
         em.close();
         emf.close();
 
-        return movies;
+        return items;
     }
 }
