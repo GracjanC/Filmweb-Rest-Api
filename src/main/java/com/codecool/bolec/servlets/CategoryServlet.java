@@ -65,32 +65,28 @@ public class CategoryServlet extends HttpServlet {
     protected void doPut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
                          throws ServletException, IOException {
 
-
         String json = httpServletRequest.getReader().lines().collect(Collectors.joining());
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
-        EntityManager em = emf.createEntityManager();
 
         try {
             JSonParser<Category> jsonParser = new JSonParser<>();
             ServletService<Category> service = new ServletService<>(Category.class);
 
+            Long id = Long.valueOf(httpServletRequest.getPathInfo().replace("/", ""));
             Category newCategory = jsonParser.jsonToObject(json, Category.class);
-            Category oldCategory = em.find(Category.class, Long.valueOf(httpServletRequest.getPathInfo().replace("/","")));
+            Category oldCategory = service.getObject(id);
 
             if (oldCategory == null) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
             } else {
-                String newName = newCategory.getName();
-                oldCategory.setName(newName);
-                em.getTransaction().begin();
-                em.merge(oldCategory);
-                em.getTransaction().commit();
+                service.put(newCategory, oldCategory);
+                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             }
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
+
     @Override
     protected void doDelete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
                             throws ServletException, IOException {
