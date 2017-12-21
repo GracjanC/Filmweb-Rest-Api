@@ -55,16 +55,14 @@ public class ServletService<T> {
         emf.close();
     }
 
-    public void put(T newObject, T oldObject) {
+    public void put(T newObject) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("bolecPU");
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
 
-        oldObject = newObject;
-
-        em.getTransaction().begin();
-        em.merge(oldObject);
-        em.getTransaction().commit();
+        transaction.begin();
+        em.merge(newObject);
+        transaction.commit();
 
         em.close();
         emf.close();
