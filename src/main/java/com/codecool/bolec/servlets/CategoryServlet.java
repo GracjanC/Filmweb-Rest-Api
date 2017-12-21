@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 
 @WebServlet("/categories/*")
-public class CategoryServlet extends HttpServlet {
+public class CategoryServlet extends HttpServlet implements ServletInterface {
 
     @Override
-    protected void doGet(HttpServletRequest httpServletRequest,
+    public void doGet(HttpServletRequest httpServletRequest,
                          HttpServletResponse httpServletResponse)
                          throws IOException {
         String idPath = httpServletRequest.getPathInfo();
@@ -39,7 +39,7 @@ public class CategoryServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+    public void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
                           throws IOException {
 
         String json = httpServletRequest.getReader().lines().collect(Collectors.joining());
@@ -58,7 +58,7 @@ public class CategoryServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+    public void doPut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
                          throws IOException {
 
         String json = httpServletRequest.getReader().lines().collect(Collectors.joining());
@@ -84,7 +84,7 @@ public class CategoryServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public void doDelete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 
         String idPath = httpServletRequest.getPathInfo();
 
